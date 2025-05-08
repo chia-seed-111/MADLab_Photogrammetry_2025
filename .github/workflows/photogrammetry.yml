@@ -1,0 +1,37 @@
+name: Photogrammetry
+
+# Manually triggered by workflow_dispatch for the front-end to initiate
+on:
+  workflow_dispatch:
+    inputs:
+      uploadDir:
+        description: 'Path (in the repo) to the folder of images'
+        required: true
+
+jobs:
+  build-and-run:
+    # NOTE: Change to the label given to Mike's physical MacOS as the hosting device.
+    runs-on: [self-hosted, macos]
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Build CLI
+        working-directory: photogrammetry-cli
+        run: swift build -c release
+
+      - name: Run Photogrammetry
+        run: |
+          photogrammetry-cli/.build/release/HelloPhotogrammetry \
+            "${{ github.event.inputs.uploadDir }}" \
+            output.usdz \
+            --detail full \
+            --sample-ordering sequential \
+            --feature-sensitivity normal
+
+      - name: Upload USDZ Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: photogrammetry-model
+          path: output.usdz
