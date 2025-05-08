@@ -1,4 +1,4 @@
-// Mary May01 2025
+// Mary May08 2025
 // NOTE: need to look into a proper method of substituting Git PAT - proxy so the token is not exposed?
 const GITHUB_TOKEN = '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';
 const OWNER = 'chia-seed-111';
@@ -63,7 +63,6 @@ document.getElementById('runBtn').onclick = async () => {
     log('🟢STATUS🟢: Loading ZIP (“${zipFile.name}”)…');
     const jszip = await JSZip.loadAsync(zipFile);
 
-    // iterate all entries
     const entries = Object.values(jszip.files)
       .filter(e => !e.dir && /\.(jpe?g|png|tiff?|heic)$/i.test(e.name));
 
@@ -72,7 +71,6 @@ document.getElementById('runBtn').onclick = async () => {
       return;
     }
 
-    // upload each image
     for (const entry of entries) {
       log('🟢STATUS🟢: Unzipping ${entry.name}…');
       const base64 = await entry.async('base64');
