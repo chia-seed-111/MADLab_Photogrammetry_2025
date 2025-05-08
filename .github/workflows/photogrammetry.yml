@@ -11,7 +11,7 @@ on:
 jobs:
   build-and-run:
     # NOTE: Change to the label given to Mike's physical MacOS as the hosting device.
-    runs-on: [self-hosted, macos]
+    runs-on: [self-hosted, MaryMacbookPro]
 
     steps:
       - name: Check out code
